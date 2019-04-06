@@ -20,5 +20,6 @@ public class DodajWpis extends AppCompatActivity {
         Intent intencja = new Intent();
         intencja.putExtra("wpis", pole);
         setResult(RESULT_OK, intencja);
-        finish();    }
+        finish();
+    }
 }
