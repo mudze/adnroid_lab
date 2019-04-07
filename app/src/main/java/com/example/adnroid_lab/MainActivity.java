@@ -8,9 +8,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.db = new MySQLite(this);
 
         String[] values = new String[] {
                 "Jabłko", "Pomarańcza", "Gruszka", "Pietruszka",
@@ -37,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         this.target = new ArrayList<>();
         this.target.addAll(Arrays.asList(values));
 
-        this.db = new MySQLite(this );
 
         this.adapter = new SimpleCursorAdapter(this,
                 android.R.layout.simple_list_item_2,
@@ -49,6 +52,19 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listview = findViewById( R.id.listView);
         listview.setAdapter(this.adapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView name = (TextView) view.findViewById(android.R.id.text1);
+
+                Warzywa warzywo = db.pobierz(Integer.parseInt(name.getText().toString()));
+
+                        Intent intencja = new Intent(getApplicationContext(), DodajWpis.class);
+                intencja.putExtra("element", warzywo);
+                startActivityForResult(intencja,2);
+            }
+        });
     }
 
     @Override
@@ -69,6 +85,13 @@ public class MainActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Warzywa nowy = (Warzywa) extras.getSerializable("nowy");
             this.db.dodaj(nowy);
+            adapter.changeCursor(db.lista());
+            adapter.notifyDataSetChanged();
+        }
+        if (requestCode==2 && resultCode==RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Warzywa nowy = (Warzywa) extras.getSerializable("nowy");
+            this.db.aktualizuj(nowy);
             adapter.changeCursor(db.lista());
             adapter.notifyDataSetChanged();
         }

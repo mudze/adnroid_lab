@@ -12,6 +12,8 @@ import java.io.Serializable;
 
 public class DodajWpis extends AppCompatActivity {
 
+    private int modyfi_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +23,26 @@ public class DodajWpis extends AppCompatActivity {
                 new String [] {"strączkowe", "dyniowe", "cebulowe", "kapustne", "korzeniowe", "psiankowate", "rzepowate", "wieloletnie"});
         Spinner rodzaj = (Spinner) findViewById(R.id.rodzaj);
         rodzaj.setAdapter(rodzaje);
+
+        Bundle extras = getIntent().getExtras();
+        try {
+            if (extras.getSerializable("element") != null) {
+                Warzywa warzywo = (Warzywa)extras.getSerializable("element");
+
+                EditText kolor = (EditText) findViewById(R.id.kolor);
+                EditText wielkosc = (EditText) findViewById(R.id.wielkosc);
+                EditText opis = (EditText) findViewById(R.id.opis);
+
+                kolor.setText(warzywo.getKolor());
+                wielkosc.setText(Float.toString(warzywo.getWirlkosc()));
+                opis.setText(warzywo.getOpis());
+
+                this.modyfi_id = warzywo.getId();
+            }
+        } catch (Exception ex) {
+            this.modyfi_id = 0;
+        }
+
     }
 
     public void wyslij (View view) {
@@ -33,6 +55,8 @@ public class DodajWpis extends AppCompatActivity {
                 kolor.getText().toString(),
                 Float.valueOf(wielkosc.getText().toString()),
                 opis.getText().toString());
+
+        warzywo.setId(this.modyfi_id);
 
         Intent intencja = new Intent();
         intencja.putExtra("nowy", warzywo);
