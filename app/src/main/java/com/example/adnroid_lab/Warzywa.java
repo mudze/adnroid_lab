@@ -1,7 +1,9 @@
 package com.example.adnroid_lab;
 
-public class Warzywa {
-    private int id;
+import java.io.Serializable;
+
+public class Warzywa implements Serializable {
+    private int _id;
     private String rodzaj;
     private String kolor;
     private Float wielkosc;
@@ -19,13 +21,13 @@ public class Warzywa {
 
     @Override
     public String toString() {
-        return "Warzymo: [id=" + id + ", rodzzaj=" + rodzaj + ", kolor=" + kolor + ", wielkosc=" + wielkosc + " ]";
+        return "Warzywo: [id=" + _id + ", rodzzaj=" + rodzaj + ", kolor=" + kolor + ", wielkosc=" + wielkosc + " ]";
     }
 
     public String getOpis() { return opis; }
-    public  String getRodzaj () { return rodzaj; }
-    public  String getKolor () { return kolor; }
+    public String getRodzaj () { return rodzaj; }
+    public String getKolor () { return kolor; }
     public float getWirlkosc () { return wielkosc; }
-    public  int getId () { return id; }
-    public void  setId (int id) { this.id = id; }
+    public int getId () { return _id; }
+    public void  setId (int id) { this._id = id; }
 }

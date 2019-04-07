@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<String> target;
     private SimpleCursorAdapter adapter;
+    private MySQLite db;
 
 
     @Override
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         this.target = new ArrayList<>();
         this.target.addAll(Arrays.asList(values));
 
-        MySQLite db = new MySQLite(this );
+        this.db = new MySQLite(this );
 
         this.adapter = new SimpleCursorAdapter(this,
                 android.R.layout.simple_list_item_2,
@@ -66,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         if (requestCode==1 && resultCode==RESULT_OK) {
             Bundle extras = data.getExtras();
-            String nowy = (String)extras.get("wpis");
-            target.add(nowy);
+            Warzywa nowy = (Warzywa) extras.getSerializable("nowy");
+            this.db.dodaj(nowy);
+            adapter.changeCursor(db.lista());
             adapter.notifyDataSetChanged();
-            Log.d("android_lab", nowy);
         }
     }
 }

@@ -40,7 +40,7 @@ public class MySQLite extends SQLiteOpenHelper {
         values.put("wielkosc", warzywo.getWirlkosc());
         values.put("opis", warzywo.getOpis());
 
-        db.insert("warzywo", null, values);
+        db.insert("warzywa", null, values);
         db.close();
     }
 
