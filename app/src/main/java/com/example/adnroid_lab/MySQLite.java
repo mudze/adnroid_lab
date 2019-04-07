@@ -88,6 +88,5 @@ public class MySQLite extends SQLiteOpenHelper {
     public Cursor lista () {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("Select * from warzywa", null);
-
     }
 }
